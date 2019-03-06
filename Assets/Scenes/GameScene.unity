@@ -637,7 +637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &729542898
 Transform:
   m_ObjectHideFlags: 0
@@ -668,7 +668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &761886758
 Transform:
   m_ObjectHideFlags: 0
@@ -699,7 +699,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &809639563
 Transform:
   m_ObjectHideFlags: 0
@@ -842,7 +842,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1297026620
 Transform:
   m_ObjectHideFlags: 0
@@ -873,7 +873,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1318766984
 Transform:
   m_ObjectHideFlags: 0
@@ -910,7 +910,7 @@ PrefabInstance:
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2.96
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
@@ -920,7 +920,7 @@ PrefabInstance:
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.2998762
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
@@ -1177,7 +1177,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1774734366
 Transform:
   m_ObjectHideFlags: 0
@@ -1237,6 +1237,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   customerSpawnGap: 5
+  foodDatabase: {fileID: 11400000, guid: fa603456d62cab14b843c6bd04efde6d, type: 2}
   customerSpawnPoints:
   - {fileID: 1318766983}
   - {fileID: 1297026619}
@@ -1357,7 +1358,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1981704665
 Transform:
   m_ObjectHideFlags: 0
@@ -1699,7 +1700,7 @@ PrefabInstance:
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.40207005
+      value: -3
       objectReference: {fileID: 0}
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
@@ -1709,7 +1710,7 @@ PrefabInstance:
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.2998762
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7593796439492886708, guid: 5c634f85c27657d4bb6cb901a386cac9,
         type: 3}
