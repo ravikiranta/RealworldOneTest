@@ -1,7 +1,7 @@
 ﻿namespace Data
 {
     [System.Serializable]
-    public class VegetableData
+    public class IngredientsData
     {
         public string vegetableName;
         public bool chopped;

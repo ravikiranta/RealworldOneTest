@@ -12,7 +12,7 @@ namespace Managers {
 
         [Header("References")]
         [SerializeField] private FoodDatabaseScriptableObject foodDatabase;
-        [SerializeField] private VegetableDatabaseScriptableObject vegetableDatabase;
+        [SerializeField] private ItemDatabaseScriptableObject itemDatabase;
         [SerializeField] private List<GameObject> customerSpawnPoints;
         #endregion
 
@@ -66,6 +66,19 @@ namespace Managers {
                 Debug.Log("Attach a food database");
                 return null;
             }
+        }
+        #endregion
+
+        #region VegetableModelLookup
+        public GameObject ReturnVegetableModel(string itemName)
+        {
+            if(itemDatabase != null)
+            {
+                var item = itemDatabase.items.Find(x => x.itemName == itemName);
+                if (item != null)
+                    return item.itemGameObject;
+            }
+            return null;
         }
         #endregion
     }
