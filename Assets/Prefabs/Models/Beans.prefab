@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8348770265688352293}
   - component: {fileID: 8348770265688352292}
   - component: {fileID: 8348770265688352295}
+  - component: {fileID: 5422396619075954252}
   m_Layer: 0
   m_Name: Beans
   m_TagString: Untagged
@@ -91,3 +92,15 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5422396619075954252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8348770265688352294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecea66d06f7081b4cadb9e69b268b452, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

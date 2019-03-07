@@ -107,3 +107,7 @@ MonoBehaviour:
   spawnItem: Onion
   spawnHeight: 0.3
   itemOnSpawner: 0
+  spawnRequested: 0
+  interactionControlsMessage: E to retrieve
+  itemReference: {fileID: 0}
+  itemRespawnTime: 5

@@ -2,7 +2,7 @@
 {
     public enum PlayerID
     {
-        First,
+        First = 0,
         Second
     }
 }
