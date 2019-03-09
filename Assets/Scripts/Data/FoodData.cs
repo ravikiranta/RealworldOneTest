@@ -5,6 +5,6 @@ namespace Data {
     public class FoodData
     {
         public string foodName;
-        public List<ItemData> ingredients;
+        public List<string> ingredients;
     }
 }

@@ -11,6 +11,8 @@ namespace Controllers
         [SerializeField] private List<string> items;
         [SerializeField] private Text userItemsInHand;
         [SerializeField] private Text userInteractionText;
+        [SerializeField] private Text userScoreText;
+        [SerializeField] private Text userTime;
         #endregion
 
         #region Properties
@@ -32,6 +34,30 @@ namespace Controllers
             set
             {
                 userInteractionText.text = value;
+            }
+        }
+        #endregion
+
+        #region ScoreFunction
+        public void UpdateScore(int score)
+        {
+            userScoreText.text = "Score:" + score.ToString();
+        }
+        #endregion
+
+        #region TimeFunctions
+        public void StartTime(int time)
+        {
+            StartCoroutine(StartTimer(time));
+        }
+
+        IEnumerator StartTimer(int time)
+        {
+            while(time > 0)
+            {
+                time--;
+                userTime.text = "Time:" + time;
+                yield return new WaitForSeconds(1f);
             }
         }
         #endregion

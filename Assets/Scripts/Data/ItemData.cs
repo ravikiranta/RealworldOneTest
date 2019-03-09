@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using Enums;
+using System.Collections.Generic;
 
 namespace Data
 {
@@ -6,6 +8,7 @@ namespace Data
     public class ItemData
     {
         public string itemName;
-        public GameObject itemGameObject;
+        public List<KitchenInteractions> possibleKitchenInteractions;
+        public List<string> resultItems;
     }
 }

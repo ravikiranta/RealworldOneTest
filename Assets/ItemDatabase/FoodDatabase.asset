@@ -15,9 +15,6 @@ MonoBehaviour:
   foodItems:
   - foodName: VegSalad
     ingredients:
-    - ingredientName: ChoppedOnion
-      count: 1
-    - ingredientName: ChoppedTomato
-      count: 1
-    - ingredientName: ChoppedBeans
-      count: 1
+    - ChoppedOnion
+    - ChoppedTomato
+    - ChoppedBeans

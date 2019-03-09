@@ -14,11 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   items:
   - itemName: Tomato
-    itemGameObject: {fileID: 6618284965600283, guid: bdd38abad7b0869428e1ece3fcc88438,
-      type: 3}
+    possibleKitchenInteractions: 03000000
+    resultItems:
+    - ChoppedTomato
   - itemName: Onion
-    itemGameObject: {fileID: 6498909876604611675, guid: 298edd88745eb6148aae997eed9878ed,
-      type: 3}
+    possibleKitchenInteractions: 03000000
+    resultItems:
+    - ChoppedOnion
   - itemName: Beans
-    itemGameObject: {fileID: 8348770265688352294, guid: 0c96deb0fc4c0884a800820a50be48d2,
-      type: 3}
+    possibleKitchenInteractions: 03000000
+    resultItems:
+    - ChoppedBeans

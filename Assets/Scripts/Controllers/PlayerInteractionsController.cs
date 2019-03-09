@@ -14,12 +14,18 @@ namespace Controllers {
         #region Variables
         [Header("Dev Settings")]
         [SerializeField] private int itemInventoryLimit;
+
+        [Header("Info")]
         [SerializeField] private List<string> itemsInHand;
         [SerializeField] private GameObject currentInteractableGameObject;
         [SerializeField] private IInteractable currentInteractable;
         [SerializeField] private PlayerData playerData;
-        [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private List<KitchenInteractions> currentPossibleInteractions;
+        [SerializeField] private bool disablePlayerInteractions;
+
+        [Header("References")]
+        [SerializeField] private PlayerMovementController playerMovementController;
+        [SerializeField] private GameObject playerChoppingText;
         #endregion
 
         #region Init
@@ -72,11 +78,11 @@ namespace Controllers {
         #endregion
 
         #region PlayerFunctions
-        void PickupItem(string item)
+        void PickupItem()
         {
             if (itemsInHand.Count < itemInventoryLimit)
             {
-                itemsInHand.Add(item);
+                itemsInHand.Add(currentInteractableGameObject.GetComponent<IRetrieve>().Retrieve());
                 UpdateItemsInUI();
             }
         }
@@ -86,72 +92,110 @@ namespace Controllers {
             UIManager.Instance.UpdatePlayerItemsInHand((int)playerData.PlayerID, itemsInHand);
         }
 
-        void DropItem()
+        void StoreItem()
         {
+            if (itemsInHand.Count > 0 && !currentInteractableGameObject.GetComponent<IStorage>().isStorageFull())
+            {
+                currentInteractableGameObject.GetComponent<IStorage>().Store(itemsInHand[0]);
+                itemsInHand.RemoveAt(0);
+                UpdateItemsInUI();
+            }
         }
-        #endregion
 
-        #region ActionUpdates
+        void ServeItem(PlayerID playerID)
+        {
+            if (itemsInHand.Count > 0)
+            {
+                currentInteractableGameObject.GetComponent<IServable>().Serve(itemsInHand[0],playerID);
+                itemsInHand.RemoveAt(0);
+                UpdateItemsInUI();
+            }
+        }
+
+        void DisposeItem()
+        {
+            if (itemsInHand.Count > 0)
+            {
+                currentInteractableGameObject.GetComponent<IDisposer>().Dispose(itemsInHand[0]);
+                itemsInHand.RemoveAt(0);
+                UpdateItemsInUI();
+            }
+        }
+        
         void ChopActionBegin()
         {
             if (playerMovementController != null)
+            {
                 playerMovementController.DisablePlayerMovement = true;
+                disablePlayerInteractions = true;
+                currentInteractableGameObject.GetComponent<IChop>().Chop(ChopActionCompleted);
+                playerChoppingText.SetActive(true);
+            }
         }
 
         void ChopActionCompleted()
         {
-            Debug.Log("Chop Completed");
-            if(playerMovementController != null)
+            if (playerMovementController != null)
+            {
                 playerMovementController.DisablePlayerMovement = false;
+                disablePlayerInteractions = false;
+                playerChoppingText.SetActive(false);
+            }
+        }
+
+        void CombineItems()
+        {
+            currentInteractableGameObject.GetComponent<ICombine>().Combine();
         }
         #endregion
 
         #region InputPolling
         void Update()
         {
-            switch (playerData.PlayerID)
+            if (!disablePlayerInteractions)
             {
-                case Enums.PlayerID.First:
-                    if (Input.GetButtonDown("FirstPlayerStore"))
-                    {
-                        // Check if current interactable has the store interaction
-                        if(currentPossibleInteractions.Exists(x=> x == KitchenInteractions.Store) && itemsInHand.Count > 0){
-                            currentInteractableGameObject.GetComponent<IStorage>().Store(itemsInHand[itemsInHand.Count -1]);
-                            itemsInHand.RemoveAt(itemsInHand.Count - 1);
-                        }
-                    }
-                    if (Input.GetButtonDown("FirstPlayerRetrieve"))
-                    {
-                        // Check if current interactable has the retrieve interaction
-                        if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Retrieve)) {
-                            PickupItem(currentInteractableGameObject.GetComponent<IStorage>().Retrieve());
-                        }
-                    }
-                    if (Input.GetButtonDown("FirstPlayerChop"))
-                    {
-                        // Check if current interactable has the retrieve interaction
-                        if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Chop))
+                switch (playerData.PlayerID)
+                {
+                    case Enums.PlayerID.First:
+                        if (Input.GetButtonDown("FirstPlayerStore"))
                         {
-                            ChopActionBegin();
-                            currentInteractableGameObject.GetComponent<IChop>().Chop(ChopActionCompleted);
-                        }
-                    }
+                            // Check if current interactable has the store interaction
+                            if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Store))
+                                StoreItem();
 
-                    else if (Input.GetButtonDown("FirstPlayerCombine"))
-                    {
-                        // Check if current interactable has the combine interaction
-                        if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Combine))
+                            if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Dispose))
+                                DisposeItem();
+
+                            if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Serve))
+                                ServeItem(PlayerID.First);
+
+                        }
+                        if (Input.GetButtonDown("FirstPlayerRetrieve"))
                         {
-
+                            // Check if current interactable has the retrieve interaction
+                            if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Retrieve))
+                                PickupItem();
                         }
-                    }
-                    break;
+                        if (Input.GetButtonDown("FirstPlayerChop"))
+                        {
+                            // Check if current interactable has the chop interaction
+                            if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Chop))
+                                ChopActionBegin();
+                        }
 
-                case Enums.PlayerID.Second:
-                    
-                    break;
+                        else if (Input.GetButtonDown("FirstPlayerCombine"))
+                        {
+                            // Check if current interactable has the combine interaction
+                            if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Combine))
+                                CombineItems();
+                        }
+                        break;
+
+                    case Enums.PlayerID.Second:
+
+                        break;
+                }
             }
-            
         }
         #endregion
     }

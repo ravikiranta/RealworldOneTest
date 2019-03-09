@@ -1,21 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Managers;
 using GameInterfaces;
 using Enums;
 
-namespace Controllers {
-    public class ItemSpawnController : MonoBehaviour, IInteractable, IRetrieve
+namespace Controllers
+{
+    public class TrashCanController : MonoBehaviour,IInteractable, IDisposer
     {
         #region Variables
-        [Header("Dev Settings")]
-        [SerializeField] private string spawnItem;
         [SerializeField] private string interactionControlsMessage;
         [SerializeField] private List<KitchenInteractions> possibleInteractions;
         #endregion
 
         #region InterfaceImplementations
+        public void Dispose(string item)
+        {
+            //Debug.Log("Item Disposed");
+        }
+
         string IInteractable.GetInteractionControls()
         {
             return interactionControlsMessage;
@@ -24,11 +27,6 @@ namespace Controllers {
         List<KitchenInteractions> IInteractable.GetPossibleInteractions()
         {
             return possibleInteractions;
-        }
-
-        string IRetrieve.Retrieve()
-        {
-            return spawnItem;
         }
         #endregion
     }
