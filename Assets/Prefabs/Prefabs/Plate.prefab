@@ -107,3 +107,4 @@ MonoBehaviour:
   maxStorageCount: 0
   itemsInStorage: []
   interactionControlsMessage: Q to store, E to retrieve
+  possibleInteractions: 0000000001000000

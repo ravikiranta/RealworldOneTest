@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameInterfaces;
+using Enums;
 
 namespace Controllers {
     public class KitchenPlateController : MonoBehaviour,IInteractable, IStorage
@@ -10,27 +11,40 @@ namespace Controllers {
         [SerializeField] private int maxStorageCount;
         [SerializeField] private List<string> itemsInStorage;
         [SerializeField] private string interactionControlsMessage;
+        [SerializeField] private List<KitchenInteractions> possibleInteractions;
+        #endregion
+
+        #region Functions
+        string IStorage.Retrieve()
+        {
+            if (itemsInStorage.Count > 0)
+            {
+                string item = itemsInStorage[itemsInStorage.Count - 1];
+                itemsInStorage.RemoveAt(itemsInStorage.Count - 1);
+                return itemsInStorage[itemsInStorage.Count - 1];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        void IStorage.Store(string item)
+        {
+            if(itemsInStorage.Count < maxStorageCount)
+            {
+                itemsInStorage.Add(item);
+            }
+        }
 
         string IInteractable.GetInteractionControls()
         {
             return interactionControlsMessage;
         }
-        #endregion
 
-        #region Functions
-        List<string> IStorage.Retrieve()
+        List<KitchenInteractions> IInteractable.GetPossibleInteractions()
         {
-            List<string> items = itemsInStorage;
-            itemsInStorage.Clear();
-            return itemsInStorage;
-        }
-
-        void IStorage.Store(List<string> items)
-        {
-            if(itemsInStorage.Count < maxStorageCount)
-            {
-                itemsInStorage.AddRange(items);
-            }
+            return possibleInteractions;
         }
         #endregion
     }

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using Managers;
 using GameInterfaces;
+using Enums;
 
 namespace Controllers {
-    public class ItemSpawnController : MonoBehaviour,IInteractable
+    public class ItemSpawnController : MonoBehaviour,IInteractable, IStorage
     {
         #region Variables
         [Header("Dev Settings")]
@@ -14,6 +15,7 @@ namespace Controllers {
         [SerializeField] private bool itemOnSpawner;
         [SerializeField] private bool spawnRequested;
         [SerializeField] private string interactionControlsMessage;
+        [SerializeField] private List<KitchenInteractions> possibleInteractions;
 
         [SerializeField] private GameObject itemReference;
         [SerializeField] [Range(0.1f, 5f)] private float itemRespawnTime;
@@ -65,7 +67,26 @@ namespace Controllers {
         string IInteractable.GetInteractionControls()
         {
             return interactionControlsMessage;
-    }
+        }
+
+        List<KitchenInteractions> IInteractable.GetPossibleInteractions()
+        {
+            return possibleInteractions;
+        }
+
+        void IStorage.Store(string item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        string IStorage.Retrieve()
+        {
+            if (itemReference != null)
+            {
+                return itemReference.name;
+            }
+            return null;
+        }
         #endregion
     }
 }

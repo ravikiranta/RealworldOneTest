@@ -8,19 +8,24 @@ namespace Controllers {
     [RequireComponent(typeof(PlayerData))]
     public class PlayerMovementController : MonoBehaviour
     {
+        #region Variables
         public float moveSpeed;             //Floating point variable to store the player's movement speed.
         public float rotateSpeed;             //Floating point variable to store the player's movement speed.
 
         private Rigidbody rb;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
         private PlayerData playerData;
+        #endregion
 
+        #region Init
         void Awake()
         {
             //Get and store a reference to the Rigidbody2D component so that we can access it.
             rb = GetComponent<Rigidbody>();
             playerData = GetComponent<PlayerData>();
         }
+        #endregion
 
+        #region InputAndPhysics
         void FixedUpdate()
         {
             float moveVertical = 0;
@@ -47,5 +52,6 @@ namespace Controllers {
             //speed, input sensitivity and direction to move our player forward.
             rb.AddForceAtPosition(transform.forward * moveSpeed * moveVertical, transform.position);
         }
+        #endregion
     }
 }

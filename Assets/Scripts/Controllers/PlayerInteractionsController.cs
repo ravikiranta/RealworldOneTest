@@ -4,6 +4,7 @@ using UnityEngine;
 using GameInterfaces;
 using Managers;
 using Data;
+using Enums;
 
 namespace Controllers {
     [RequireComponent(typeof(PlayerData))]
@@ -13,9 +14,10 @@ namespace Controllers {
         [Header("Dev Settings")]
         [SerializeField] private int itemInventoryLimit;
         [SerializeField] private List<string> itemsInHand;
-        [SerializeField] private UserInteractionPanelController userInteractionPanelController;
+        private GameObject currentInteractableGameObject;
         private IInteractable currentInteractable;
         private PlayerData playerData;
+        private List<KitchenInteractions> currentPossibleInteractions;
         #endregion
 
         #region Init
@@ -33,6 +35,8 @@ namespace Controllers {
             {
                 if(currentInteractable != null)
                 {
+                    currentPossibleInteractions = currentInteractable.GetPossibleInteractions();
+                    currentInteractableGameObject = objectCollider.gameObject;
                     UIManager.Instance.UpdatePlayerInteractionMessages(
                         (int)playerData.PlayerID, currentInteractable.GetInteractionControls());
                 }
@@ -68,6 +72,10 @@ namespace Controllers {
             if(currentInteractable == exitObjectCollider.GetComponent<GameInterfaces.IInteractable>())
             {
                 Debug.Log("Exited existing interactable");
+                // Clear possible interactions
+                currentPossibleInteractions.Clear();
+                currentInteractableGameObject = null;
+                //Update UI interactions text
                 UIManager.Instance.UpdatePlayerInteractionMessages((int)playerData.PlayerID, "");
             }
             else
@@ -76,12 +84,10 @@ namespace Controllers {
             }
         }
 
-        void PickupItem(GameInterfaces.IPickable item)
+        void PickupItem(string item)
         {
             if (itemsInHand.Count < itemInventoryLimit)
             {
-                itemsInHand.Add(item.GetItemName());
-                item.Destroy();
 
                 UpdateItemsInUI();
             }
@@ -94,6 +100,46 @@ namespace Controllers {
 
         void DropItem()
         {
+        }
+        #endregion
+
+        #region InputPolling
+        void Update()
+        {
+            switch (playerData.PlayerID)
+            {
+                case Enums.PlayerID.First:
+                    if (Input.GetButtonDown("FirstPlayerStore"))
+                    {
+                        // Check if current interactable has the store interaction
+                        if(currentPossibleInteractions.Exists(x=> x == KitchenInteractions.Store) && itemsInHand.Count > 0){
+                            currentInteractableGameObject.GetComponent<IStorage>().Store(itemsInHand[itemsInHand.Count -1]);
+                            itemsInHand.RemoveAt(itemsInHand.Count - 1);
+                        }
+                    }
+                    if (Input.GetButtonDown("FirstPlayerRetrieve"))
+                    {
+                        Debug.Log("Retrieving");
+                        // Check if current interactable has the retrieve interaction
+                        if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Retrieve)) {
+                            PickupItem(currentInteractableGameObject.GetComponent<IStorage>().Retrieve());
+                        }
+                    }
+                    else if (Input.GetButtonDown("FirstPlayerCombine"))
+                    {
+                        // Check if current interactable has the combine interaction
+                        if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Combine))
+                        {
+
+                        }
+                    }
+                    break;
+
+                case Enums.PlayerID.Second:
+                    
+                    break;
+            }
+            
         }
         #endregion
     }
