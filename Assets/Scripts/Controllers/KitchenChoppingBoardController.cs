@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using GameInterfaces;
 using Enums;
+using System;
 
 namespace Controllers
 {
-    public class KitchenChoppingBoardController : MonoBehaviour,IInteractable, IStorage
+    public class KitchenChoppingBoardController : MonoBehaviour,IInteractable, IStorage, IChop
     {
         #region Variables
+        [Header ("Dev Settings")]
         [SerializeField] private int maxStorageCount;
-        [SerializeField] private List<string> itemsInStorage;
+        [SerializeField] private int maxChoppedItemsOnBoardCount;
         [SerializeField] private string interactionControlsMessage;
+        [SerializeField] [Range(1,5)] private float chopTime;
+
+        [Header ("Info")]
+        [SerializeField] private List<string> itemsInStorage;
+        [SerializeField] private List<string> processedItems;
         [SerializeField] private List<KitchenInteractions> possibleInteractions;
+        [SerializeField] private float chopTimer;
         #endregion
 
-        #region Functions
+        #region InterfaceImplementations
         string IStorage.Retrieve()
         {
             if (itemsInStorage.Count > 0)
@@ -46,6 +54,30 @@ namespace Controllers
         List<KitchenInteractions> IInteractable.GetPossibleInteractions()
         {
             return possibleInteractions;
+        }
+
+        void IChop.Chop(Action callback)
+        {
+            if (itemsInStorage.Count > 0)
+            {
+                StartCoroutine(ChopTimer(itemsInStorage[0], callback));
+            }
+            else
+                Debug.Log("No items in storage");
+        }
+        #endregion
+
+        #region ChopFunction
+        IEnumerator ChopTimer(string itemName, Action callback)
+        {
+            while(chopTimer <= chopTime)
+            {
+                chopTimer++;
+                yield return new WaitForSeconds(1f);
+            }
+            chopTimer = 0;
+            callback();
+            //processedItems.Add()
         }
         #endregion
     }

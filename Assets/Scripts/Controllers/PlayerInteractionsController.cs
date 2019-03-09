@@ -8,87 +8,75 @@ using Enums;
 
 namespace Controllers {
     [RequireComponent(typeof(PlayerData))]
+    [RequireComponent(typeof(PlayerMovementController))]
     public class PlayerInteractionsController : MonoBehaviour
     {
         #region Variables
         [Header("Dev Settings")]
         [SerializeField] private int itemInventoryLimit;
         [SerializeField] private List<string> itemsInHand;
-        private GameObject currentInteractableGameObject;
-        private IInteractable currentInteractable;
-        private PlayerData playerData;
-        private List<KitchenInteractions> currentPossibleInteractions;
+        [SerializeField] private GameObject currentInteractableGameObject;
+        [SerializeField] private IInteractable currentInteractable;
+        [SerializeField] private PlayerData playerData;
+        [SerializeField] private PlayerMovementController playerMovementController;
+        [SerializeField] private List<KitchenInteractions> currentPossibleInteractions;
         #endregion
 
         #region Init
         void Awake()
         {
             playerData = GetComponent<PlayerData>();
+            playerMovementController = GetComponent<PlayerMovementController>();
         }
         #endregion
 
-        #region Functions
-        void OnTriggerEnter(Collider objectCollider)
+        #region Event
+        public delegate void ActionCompleteCallback();
+        ActionCompleteCallback ChopCompleteCallback;
+        #endregion
+
+        #region OnTriggerFunctions
+        void OnTriggerStay(Collider objectCollider)
         {
             // Check if the items is interactable
             currentInteractable = objectCollider.GetComponent<GameInterfaces.IInteractable>();
             {
                 if(currentInteractable != null)
                 {
-                    currentPossibleInteractions = currentInteractable.GetPossibleInteractions();
                     currentInteractableGameObject = objectCollider.gameObject;
+                    currentPossibleInteractions = new List<KitchenInteractions>(currentInteractable.GetPossibleInteractions());
                     UIManager.Instance.UpdatePlayerInteractionMessages(
                         (int)playerData.PlayerID, currentInteractable.GetInteractionControls());
                 }
             }
-
-            ////Debug.Log("Colliding:" + interactiveItem.name);
-            //GameInterfaces.IPickable pickable = objectCollider.GetComponent<GameInterfaces.IPickable>();
-            //if (pickable != null)
-            //{
-            //    //Debug.Log("Picked up item:" + interactable.GetItemName());
-            //    PickupItem(pickable);
-            //}
-            //else
-            //{
-            //    Debug.Log("Not Pickable");
-            //}
-
-            //GameInterfaces.IStorage kitchenInteractableStorage = 
-            //    objectCollider.GetComponent<GameInterfaces.IStorage>();
-
-            //if (kitchenInteractableStorage != null)
-            //{
-
-            //}
-            //else
-            //{
-            //    Debug.Log("Not Storable");
-            //}
         }
 
         void OnTriggerExit(Collider exitObjectCollider)
         {
             if(currentInteractable == exitObjectCollider.GetComponent<GameInterfaces.IInteractable>())
             {
-                Debug.Log("Exited existing interactable");
+                //Debug.Log("Exited existing interactable");
+                
                 // Clear possible interactions
                 currentPossibleInteractions.Clear();
                 currentInteractableGameObject = null;
+                
                 //Update UI interactions text
                 UIManager.Instance.UpdatePlayerInteractionMessages((int)playerData.PlayerID, "");
             }
             else
             {
-                Debug.Log("Entered another interactable");
+                //Debug.Log("Entered another interactable");
             }
         }
+        #endregion
 
+        #region PlayerFunctions
         void PickupItem(string item)
         {
             if (itemsInHand.Count < itemInventoryLimit)
             {
-
+                itemsInHand.Add(item);
                 UpdateItemsInUI();
             }
         }
@@ -100,6 +88,21 @@ namespace Controllers {
 
         void DropItem()
         {
+        }
+        #endregion
+
+        #region ActionUpdates
+        void ChopActionBegin()
+        {
+            if (playerMovementController != null)
+                playerMovementController.DisablePlayerMovement = true;
+        }
+
+        void ChopActionCompleted()
+        {
+            Debug.Log("Chop Completed");
+            if(playerMovementController != null)
+                playerMovementController.DisablePlayerMovement = false;
         }
         #endregion
 
@@ -119,12 +122,21 @@ namespace Controllers {
                     }
                     if (Input.GetButtonDown("FirstPlayerRetrieve"))
                     {
-                        Debug.Log("Retrieving");
                         // Check if current interactable has the retrieve interaction
                         if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Retrieve)) {
                             PickupItem(currentInteractableGameObject.GetComponent<IStorage>().Retrieve());
                         }
                     }
+                    if (Input.GetButtonDown("FirstPlayerChop"))
+                    {
+                        // Check if current interactable has the retrieve interaction
+                        if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Chop))
+                        {
+                            ChopActionBegin();
+                            currentInteractableGameObject.GetComponent<IChop>().Chop(ChopActionCompleted);
+                        }
+                    }
+
                     else if (Input.GetButtonDown("FirstPlayerCombine"))
                     {
                         // Check if current interactable has the combine interaction

@@ -13,18 +13,11 @@ MonoBehaviour:
   m_Name: FoodDatabase
   m_EditorClassIdentifier: 
   foodItems:
-  - foodName: OnionSalad
-    vegetables:
-    - vegetableName: Onion
-      chopped: 1
+  - foodName: VegSalad
+    ingredients:
+    - ingredientName: ChoppedOnion
       count: 1
-  - foodName: TomatoSalad
-    vegetables:
-    - vegetableName: Tomato
-      chopped: 1
+    - ingredientName: ChoppedTomato
       count: 1
-  - foodName: BeansSalad
-    vegetables:
-    - vegetableName: Beans
-      chopped: 0
-      count: 2
+    - ingredientName: ChoppedBeans
+      count: 1

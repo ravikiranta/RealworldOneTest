@@ -10,7 +10,14 @@
     {
         Store,
         Retrieve,
+        Chop,
         Combine,
         Deliver
+    }
+
+    public enum ItemType
+    {
+        Item,
+        Food
     }
 }

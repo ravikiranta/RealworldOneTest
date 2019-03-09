@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5422490199867098213}
   - component: {fileID: 5422490199867098212}
   - component: {fileID: 5422490199867098215}
-  - component: {fileID: 4075086898660876126}
+  - component: {fileID: 2996982349049111862}
   m_Layer: 0
   m_Name: ChoppingBoard
   m_TagString: Untagged
@@ -92,7 +92,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &4075086898660876126
+--- !u!114 &2996982349049111862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -101,10 +101,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 5422490199867098214}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f40b5aa765bd3ab4ea6ce0b1ed9d441c, type: 3}
+  m_Script: {fileID: 11500000, guid: bdf4209dae54efa46af69812b3e90757, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxStorageCount: 0
+  maxStorageCount: 1
+  maxChoppedItemsOnBoardCount: 3
+  interactionControlsMessage: Q to store, E to retrieve, C to chop
+  chopTime: 3
   itemsInStorage: []
-  interactionControlsMessage: Q to store, E to retrieve, T to combine
+  choppedItems: []
   possibleInteractions: 000000000100000002000000
