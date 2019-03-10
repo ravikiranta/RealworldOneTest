@@ -78,12 +78,35 @@ namespace Controllers {
         #endregion
 
         #region PlayerFunctions
-        void PickupItem()
+        void RetrieveItem()
         {
             if (itemsInHand.Count < itemInventoryLimit)
             {
                 itemsInHand.Add(currentInteractableGameObject.GetComponent<IRetrieve>().Retrieve());
                 UpdateItemsInUI();
+            }
+        }
+
+        void PickupItem()
+        {
+            if (itemsInHand.Count < itemInventoryLimit)
+            {
+                currentInteractableGameObject.GetComponent<IPickup>().PickupItem(PickedUpCallback,playerData.PlayerID);
+            }
+        }
+
+        void PickedUpCallback(PickupData pickupData)
+        {
+            //Debug.Log("Got Pickup:" + pickupData.pickupType);
+            switch (pickupData.pickupType)
+            {
+                case PickupType.Speed:
+                    playerMovementController.IncrementMoveSpeed(pickupData.pickupValue, pickupData.lifeTime);
+                    break;
+                case PickupType.Time:
+                    break;
+                case PickupType.Score:
+                    break;
             }
         }
 
@@ -168,12 +191,14 @@ namespace Controllers {
 
                             if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Serve))
                                 ServeItem(PlayerID.First);
-
                         }
                         if (Input.GetButtonDown("FirstPlayerRetrieve"))
                         {
                             // Check if current interactable has the retrieve interaction
                             if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Retrieve))
+                                RetrieveItem();
+
+                            if (currentPossibleInteractions.Exists(x => x == KitchenInteractions.Pickup))
                                 PickupItem();
                         }
                         if (Input.GetButtonDown("FirstPlayerChop"))

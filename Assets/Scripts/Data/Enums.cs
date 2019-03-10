@@ -14,6 +14,14 @@
         Chop,
         Combine,
         Deliver,
-        Serve
+        Serve,
+        Pickup
+    }
+
+    public enum PickupType
+    {
+        Speed,
+        Time,
+        Score
     }
 }

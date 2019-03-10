@@ -9,10 +9,14 @@ namespace Controllers {
     public class PlayerMovementController : MonoBehaviour
     {
         #region Variables
-        [Header ("Dev Settings")]
+        [Header("Dev Settings")]
         [SerializeField] private float moveSpeed;             //Floating point variable to store the player's movement speed.
         [SerializeField] private float rotateSpeed;             //Floating point variable to store the player's movement speed.
         [SerializeField] private bool disablePlayerMovement;
+
+        [Header("Info")]
+        [SerializeField] private float moveSpeedIncrement;
+        [SerializeField] private float moveIncrementTimer;
 
         private Rigidbody rb;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
         private PlayerData playerData;
@@ -34,6 +38,32 @@ namespace Controllers {
             //Get and store a reference to the Rigidbody2D component so that we can access it.
             rb = GetComponent<Rigidbody>();
             playerData = GetComponent<PlayerData>();
+        }
+        #endregion
+
+        #region PowerupEffects
+        public void IncrementMoveSpeed(float incrementValue, float timeInterval)
+        {
+            moveSpeedIncrement = incrementValue;
+            moveIncrementTimer = timeInterval;
+
+            StopCoroutine("SpeedIncrementTimer");
+            StartCoroutine("SpeedIncrementTimer");
+        }
+
+        IEnumerator SpeedIncrementTimer(float timeInterval)
+        {
+            while(moveIncrementTimer > 0)
+            {
+                moveIncrementTimer--;
+                yield return new WaitForSeconds(1f);
+            }
+            ResetMoveSpeedIncrement();
+        }
+
+        void ResetMoveSpeedIncrement()
+        {
+            moveSpeedIncrement = 0;
         }
         #endregion
 
@@ -65,8 +95,11 @@ namespace Controllers {
 
             //Call the AddForce function of our Rigidbody2D rb supplying 
             //speed, input sensitivity and direction to move our player forward.
-            rb.AddForceAtPosition(transform.forward * moveSpeed * moveVertical, transform.position);
+            rb.AddForceAtPosition(transform.forward * (moveSpeed + moveSpeedIncrement) * moveVertical, transform.position);
         }
+        #endregion
+
+        #region PlayerScore
         #endregion
     }
 }

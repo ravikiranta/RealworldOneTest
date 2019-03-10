@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2b29aa91320a74f8501513f7fbe4b9, type: 3}
+  m_Name: PickupDatabase
+  m_EditorClassIdentifier: 
+  pickups:
+  - pickupType: 0
+    pickupModel: {fileID: 2788116241112828625, guid: cf3bf82b065ecd5498947f1a342ba8be,
+      type: 3}
+    pickupValue: 10
+    lifeTime: 15
+  - pickupType: 1
+    pickupModel: {fileID: 2481688493420956842, guid: b4ea99a9941f1594f9ee15f270e39b0a,
+      type: 3}
+    pickupValue: 10
+    lifeTime: 0
+  - pickupType: 2
+    pickupModel: {fileID: 1332065760303667788, guid: b56ae4d20ff440a4e94d08bab9572685,
+      type: 3}
+    pickupValue: 5
+    lifeTime: 0

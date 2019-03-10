@@ -4,23 +4,27 @@ using UnityEngine;
 using ScriptableObjects;
 using Data;
 using Enums;
+using Controllers;
 
 namespace Managers {
     public class GameManager : MonoBehaviour {
         #region Variables
         [Header("Dev Settings")]
         [Range(0.1f, 10f)] [SerializeField] private float customerSpawnGap = 5.0f;
-        
 
         [Header("Info")]
         [SerializeField] private int defaultScore;
         [SerializeField] private int defaultPlayerTimer;
-        [SerializeField] private List<int> score;
 
-        [Header("References")]
+        [Header("Databases")]
         [SerializeField] private FoodDatabaseScriptableObject foodDatabase;
         [SerializeField] private ItemDatabaseScriptableObject itemDatabase;
+        [SerializeField] private PickupDatabaseScriptableObject pickupDatabase;
+
+        [Header("References")]
+        [SerializeField] private List<PlayerBaseController> playerBaseControllers;
         [SerializeField] private List<GameObject> customerSpawnPoints;
+        [SerializeField] private List<GameObject> pickupSpawnPoints;
         #endregion
 
         #region Properties
@@ -29,6 +33,14 @@ namespace Managers {
             get
             {
                 return defaultScore;
+            }
+        }
+
+        public int DefaultPlayerTimer
+        {
+            get
+            {
+                return defaultPlayerTimer;
             }
         }
         #endregion
@@ -50,11 +62,7 @@ namespace Managers {
         #region Init
         void Start() {
             StartCoroutine(AutoSpawnCustomers());
-            UIManager.Instance.StartPlayerTimers(defaultPlayerTimer);
-            score = new List<int>(2);
-            score.Add(0);
-            score.Add(0);
-            UIManager.Instance.UpdatePlayerScore(score);
+            
         }
 
         IEnumerator AutoSpawnCustomers()
@@ -124,7 +132,6 @@ namespace Managers {
                         Debug.Log("This item does not have interaction:" + interaction);
                         return null;
                     }
-                    break;
             }
             return null;
         }
@@ -144,11 +151,36 @@ namespace Managers {
         }
         #endregion
 
-        #region Scoring
-        public void UpdateScore(int addScore, PlayerID player)
+        #region PickupFunctions
+        public PickupData ReturnRandomPickup()
         {
-            score[(int)player] += addScore;
-            UIManager.Instance.UpdatePlayerScore(score);
+            PickupType randomPickup = (PickupType) Random.Range(0,System.Enum.GetValues((typeof(PickupType))).Length - 1);
+            PickupData pickup = pickupDatabase.pickups.Find(x => x.pickupType == randomPickup);
+            if (pickup.pickupModel != null)
+                return new PickupData(pickup.pickupType,pickup.pickupModel, pickup.pickupValue, pickup.lifeTime);
+            else
+            {
+                Debug.Log("Pickup not found in database:" + randomPickup.ToString());
+                return null;
+            }
+        }
+
+        public Transform ReturnRandomPickupSpawnPoint()
+        {
+            if (pickupSpawnPoints.Count > 0)
+            {
+                int randomSpawnPoint = Random.Range(0, pickupSpawnPoints.Count - 1);
+                return pickupSpawnPoints[randomSpawnPoint].transform;
+            }
+            else
+                return null;
+        }
+        #endregion
+
+        #region Scoring
+        public void UpdateScore(int addScore, PlayerID playerID)
+        {
+            playerBaseControllers[(int)playerID].UpdateScore(addScore);
         }
         #endregion
     }

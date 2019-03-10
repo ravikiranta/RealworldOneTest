@@ -15,14 +15,21 @@ namespace Controllers
         [SerializeField] private float countDownSpeed = 1/3f;
         [SerializeField] private float countDownSpeedIncrement = 0.25f;
         private float maxTime;
+        private float countDownTime;
         #endregion
 
         #region Timer Functions
-        public void StarTimer(float countDownTime, Action callback)
+        public void StarTimer(float startTime, Action callback)
         {
-            maxTime = countDownTime;
+            maxTime = startTime;
+            countDownTime = startTime;
             ResetTimer();
             StartCoroutine(Timer(countDownTime, callback));
+        }
+
+        public float ReturnFractionOfTimeLeft()
+        {
+            return countDownTime / maxTime;
         }
 
         void ResetTimer()

@@ -104,9 +104,12 @@ GameObject:
   - component: {fileID: 7593796439492886710}
   - component: {fileID: 7593796439492886711}
   - component: {fileID: 7593796439492886704}
+  - component: {fileID: 5542153524945498440}
   - component: {fileID: 7593796439492886667}
   - component: {fileID: 7593796439492886705}
   - component: {fileID: 6650534551612196261}
+  - component: {fileID: 2528566847525032524}
+  - component: {fileID: 2350063950082206620}
   - component: {fileID: 1602643085628076487}
   m_Layer: 0
   m_Name: Player1
@@ -205,6 +208,23 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!114 &5542153524945498440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593796439492886706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e998d14609662142a64085a3fe03e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerData: {fileID: 0}
+  playerMovementController: {fileID: 0}
+  playerInteractionsController: {fileID: 0}
+  playerTimeController: {fileID: 0}
+  playerScoreController: {fileID: 0}
 --- !u!114 &7593796439492886667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +253,8 @@ MonoBehaviour:
   moveSpeed: 40
   rotateSpeed: 5
   disablePlayerMovement: 0
+  moveSpeedIncrement: 0
+  moveIncrementTimer: 0
 --- !u!114 &6650534551612196261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,6 +275,32 @@ MonoBehaviour:
   disablePlayerInteractions: 0
   playerMovementController: {fileID: 0}
   playerChoppingText: {fileID: 4939261187892638024}
+--- !u!114 &2528566847525032524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593796439492886706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19d7575e68fc0e9478010509d576fd69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  score: 0
+--- !u!114 &2350063950082206620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7593796439492886706}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fa735f9010d0cf4f95280de6f928ad6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timer: 0
 --- !u!65 &1602643085628076487
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -16,6 +16,7 @@ namespace Controllers
         [SerializeField] private string interactionControlsMessage;
         [SerializeField] private List<KitchenInteractions> possibleInteractions;
         [SerializeField] private float waitTime;
+        [SerializeField] [Range(0,100)] private float percentageWaitTimeBeforeWhichPickupSpawns;
 
         [Header ("Info")]
         [SerializeField] private string foodOrdered;
@@ -29,6 +30,11 @@ namespace Controllers
         #endregion
 
         #region Init
+        void Start()
+        {
+            //CreateRandomPickup();   //Testing
+        }
+
         void OnEnable()
         {
             foodOrdered = GameManager.Instance.ReturnRandomFoodSuggestionForCustomer();
@@ -64,6 +70,8 @@ namespace Controllers
             if (foodCheck)
             {
                 GameManager.Instance.UpdateScore(GameManager.Instance.DefaultScore, playerID);
+
+                CheckTimerForPickupSpawn();
             }
             else
             {
@@ -73,7 +81,33 @@ namespace Controllers
                 customerAngry = true;
                 timerUIController.IncreaseCountDownSpeed();
             }
-            Debug.Log("Serve Accepted:" + foodCheck);
+            Debug.Log("Serve Acceptance:" + foodCheck);
+        }
+
+        void CheckTimerForPickupSpawn()
+        {
+            if (timerUIController.ReturnFractionOfTimeLeft() * 100 >= percentageWaitTimeBeforeWhichPickupSpawns)
+            {
+                CreateRandomPickup();
+            }
+        }
+
+        void CreateRandomPickup()
+        {
+            PickupData randomPickup = GameManager.Instance.ReturnRandomPickup();
+            Transform spawnPoint = GameManager.Instance.ReturnRandomPickupSpawnPoint();
+            if (spawnPoint != null)
+            {
+                if (randomPickup.pickupModel != null)
+                {
+                    GameObject pickup = Instantiate(randomPickup.pickupModel, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+                    pickup.GetComponent<PickupController>().Init(randomPickup);
+                }
+                else
+                    Debug.Log("Random Pickup is null:" + randomPickup);
+            }
+            else
+                Debug.Log("No spawn point available on game manager");
         }
 
         void IServable.Serve(string food, PlayerID playerID)

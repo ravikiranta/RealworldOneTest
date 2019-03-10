@@ -46,19 +46,9 @@ namespace Controllers
         #endregion
 
         #region TimeFunctions
-        public void StartTime(int time)
+        public void UpdateTime(int time)
         {
-            StartCoroutine(StartTimer(time));
-        }
-
-        IEnumerator StartTimer(int time)
-        {
-            while(time > 0)
-            {
-                time--;
-                userTime.text = "Time:" + time;
-                yield return new WaitForSeconds(1f);
-            }
+            userTime.text = "Time:" + time;
         }
         #endregion
     }

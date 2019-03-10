@@ -26,14 +26,6 @@ namespace Managers
         #endregion
 
         #region UIFunctions
-        public void StartPlayerTimers(int time)
-        {
-            for (int i = 0; i < userInteractionPanelControllers.Count; i++)
-            {
-                userInteractionPanelControllers[i].StartTime(time);
-            }
-        }
-
         public void UpdatePlayerItemsInHand(int playerID, List<string> items)
         {
             userInteractionPanelControllers[playerID].Items = items;
@@ -44,12 +36,14 @@ namespace Managers
             userInteractionPanelControllers[playerID].UserInteractionText = interactionMesage;
         }
 
-        public void UpdatePlayerScore(List<int> score)
+        public void UpdatePlayerScore(int playerID, int score)
         {
-            for(int i = 0; i < userInteractionPanelControllers.Count; i++)
-            {
-                userInteractionPanelControllers[i].UpdateScore(score[i]);
-            }
+            userInteractionPanelControllers[playerID].UpdateScore(score);
+        }
+
+        public void UpdatePlayerTime(int playerID, int time)
+        {
+            userInteractionPanelControllers[playerID].UpdateTime(time);
         }
         #endregion
     }
