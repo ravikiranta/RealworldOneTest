@@ -106,11 +106,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d8a53445a8c29458a84b24b27d495f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionControlsMessage: Q to serve
+  interactionControlsMessage: ServeCustomer
   possibleInteractions: 06000000
-  waitTime: 90
+  waitTime: 180
+  percentageWaitTimeBeforeWhichPickupSpawns: 70
   foodOrdered: 
   foodServed: 
+  customerAngry: 0
+  incorrectDelivery: 
   timerUIController: {fileID: 7520345210996347747}
   orderTextUI: {fileID: 225910641487238824}
 --- !u!1001 &4240981676668503472

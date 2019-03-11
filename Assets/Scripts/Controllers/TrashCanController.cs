@@ -6,6 +6,7 @@ using Enums;
 
 namespace Controllers
 {
+    //This class controls the behaviour of the trash can
     public class TrashCanController : MonoBehaviour,IInteractable, IDisposer
     {
         #region Variables

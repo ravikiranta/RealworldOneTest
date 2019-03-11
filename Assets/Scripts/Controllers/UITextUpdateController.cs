@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 
 namespace Controllers {
+    // This class is on the Text components of the plate UI and the chopping board UI
     public class UITextUpdateController : MonoBehaviour
     {
         [SerializeField] private Text textUI;

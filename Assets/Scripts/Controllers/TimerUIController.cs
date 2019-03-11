@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace Controllers
 {
+    //This class controls the wait timer on the customer HUD
     public class TimerUIController : MonoBehaviour
     {
         #region Variables

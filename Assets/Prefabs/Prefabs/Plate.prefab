@@ -119,7 +119,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxStorageCount: 1
-  interactionControlsMessage: Q to store, E to retrieve
+  interactionControlsMessage: Plate
   possibleInteractions: 0200000001000000
   itemsInStorage: []
   uiTextUpdateController: {fileID: 5118973965947161019}

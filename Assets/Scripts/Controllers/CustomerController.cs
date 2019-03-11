@@ -9,6 +9,7 @@ using UnityEngine.UI;
 
 namespace Controllers
 {
+    // This class controls the behaviour of the customers coming to the shop
     public class CustomerController : MonoBehaviour,IInteractable, IServable
     {
         #region Variables
@@ -44,9 +45,10 @@ namespace Controllers
             incorrectDelivery.Clear();
         }
 
+
         void WaitTimeOver()
         {
-            Debug.Log("Wait Time Over");
+            //Debug.Log("Wait Time Over");
             // Double penality for person who delivered wrong
             if (customerAngry)
             for (int i = 0; i < incorrectDelivery.Count; i++)
@@ -65,43 +67,59 @@ namespace Controllers
 
         void CheckMyFood(PlayerID playerID)
         {
+            // Check if the delivered food is matching with the requested food
             bool foodCheck = GameManager.Instance.FoodServedCheck(foodOrdered, foodServed);
 
+            // If matching
             if (foodCheck)
             {
                 GameManager.Instance.UpdateScore(GameManager.Instance.DefaultScore, playerID);
 
-                CheckTimerForPickupSpawn();
+                // Check if the item was delivered on time and spawn pickup reward for this player
+                CheckTimerForPickupSpawn(playerID);
+
+                // Deactivate the cusomter
+                transform.parent.gameObject.SetActive(false);
             }
             else
             {
+                // If the deliver was wrong add this player to incorrect delivery list
                 if (!incorrectDelivery.Contains(playerID))
                     incorrectDelivery.Add(playerID);
 
+                // Customer is now angry
                 customerAngry = true;
+
+                // Wait timer counts down faster
                 timerUIController.IncreaseCountDownSpeed();
             }
-            Debug.Log("Serve Acceptance:" + foodCheck);
+            //Debug.Log("Serve Acceptance:" + foodCheck);
         }
 
-        void CheckTimerForPickupSpawn()
+        void CheckTimerForPickupSpawn(PlayerID playerID)
         {
             if (timerUIController.ReturnFractionOfTimeLeft() * 100 >= percentageWaitTimeBeforeWhichPickupSpawns)
             {
-                CreateRandomPickup();
+                CreateRandomPickup(playerID);
             }
         }
 
-        void CreateRandomPickup()
+        void CreateRandomPickup(PlayerID playerID)
         {
+            // Give random pickup reward
             PickupData randomPickup = GameManager.Instance.ReturnRandomPickup();
+
+            // Give random reward spawn point
             Transform spawnPoint = GameManager.Instance.ReturnRandomPickupSpawnPoint();
             if (spawnPoint != null)
             {
                 if (randomPickup.pickupModel != null)
                 {
-                    GameObject pickup = Instantiate(randomPickup.pickupModel, spawnPoint.position, spawnPoint.rotation, spawnPoint);
-                    pickup.GetComponent<PickupController>().Init(randomPickup);
+                    GameObject pickup = Instantiate(
+                        randomPickup.pickupModel, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+                    
+                    // Set the data for this pickup like value, lifetime, pickup player id who can pick this item up
+                    pickup.GetComponent<PickupController>().Init(randomPickup, playerID);
                 }
                 else
                     Debug.Log("Random Pickup is null:" + randomPickup);

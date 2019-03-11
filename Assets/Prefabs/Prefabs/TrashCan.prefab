@@ -105,5 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdfd68ee9b84897468af7caef946813e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionControlsMessage: Q to Dispose
+  interactionControlsMessage: TrashCan
   possibleInteractions: 00000000

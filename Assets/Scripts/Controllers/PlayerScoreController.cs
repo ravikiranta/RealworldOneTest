@@ -5,6 +5,7 @@ using Managers;
 
 namespace Controllers
 {
+    //This class solely handles the score of the player
     public class PlayerScoreController : MonoBehaviour
     {
         #region Variables

@@ -16,7 +16,7 @@ MonoBehaviour:
   - pickupType: 0
     pickupModel: {fileID: 2788116241112828625, guid: cf3bf82b065ecd5498947f1a342ba8be,
       type: 3}
-    pickupValue: 10
+    pickupValue: 20
     lifeTime: 15
   - pickupType: 1
     pickupModel: {fileID: 2481688493420956842, guid: b4ea99a9941f1594f9ee15f270e39b0a,

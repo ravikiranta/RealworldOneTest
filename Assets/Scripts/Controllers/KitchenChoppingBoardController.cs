@@ -22,8 +22,9 @@ namespace Controllers
         [SerializeField] private UITextUpdateController uiTextUpdateController;
 
         [Header ("Info")]
-        [SerializeField] private List<string> itemsInStorage;
-        [SerializeField] private List<string> processedItems;
+        //Items storage was split to allow the player the ability to combine items already chopped up which are stored separately
+        [SerializeField] private List<string> itemsInStorage;       // These are the items that are on the board
+        [SerializeField] private List<string> processedItems;       // These are the items that are processed
         
         [SerializeField] private float chopTimer;
         #endregion
@@ -31,17 +32,17 @@ namespace Controllers
         #region InterfaceImplementations
         string IRetrieve.Retrieve()
         {
-            if (processedItems.Count > 0)
-            {
-                string item = processedItems[processedItems.Count - 1];
-                processedItems.RemoveAt(processedItems.Count - 1);
-                UpdateUI();
-                return item;
-            }
-            else if (itemsInStorage.Count > 0)
+            if (itemsInStorage.Count > 0)
             {
                 string item = itemsInStorage[itemsInStorage.Count - 1];
                 itemsInStorage.RemoveAt(itemsInStorage.Count - 1);
+                UpdateUI();
+                return item;
+            }
+            else if (processedItems.Count > 0)
+            {
+                string item = processedItems[processedItems.Count - 1];
+                processedItems.RemoveAt(processedItems.Count - 1);
                 UpdateUI();
                 return item;
             }
@@ -53,6 +54,7 @@ namespace Controllers
 
         void IStorage.Store(string item)
         {
+            // You can store items directly only in the storage
             if (itemsInStorage.Count < maxStorageCount)
             {
                 itemsInStorage.Add(item);
@@ -99,49 +101,52 @@ namespace Controllers
         void ICombine.Combine()
         {
 
-            if (itemsInStorage.Count < maxStorageCount)
+            string food = "";
+
+            // Add the processed items
+            for (int i = 0; i < processedItems.Count; i++)
             {
-                string food = "";
-
-                // Add the processed items
-                for (int i = 0; i < processedItems.Count; i++)
-                {
-                    food += processedItems[i];
-                    if (i < processedItems.Count - 1)
-                        food += ", ";
-                }
-
-                // Add anything else that is on the table
-                for (int i = 0; i < itemsInStorage.Count; i++)
-                {
-                    food += itemsInStorage[i];
-                    if (i < processedItems.Count - 1)
-                        food += ", ";
-                }
-
-                processedItems.Clear();
-                itemsInStorage.Clear();
-
-                itemsInStorage.Add(food);
-
-                UpdateUI();
+                food += processedItems[i];
+                // If this is not the last item add coma
+                if (i < processedItems.Count - 1)
+                    food += ", ";
             }
-            else
+
+            // Add a coma if items were taken from processed list and more items to be combined from storage
+            if (processedItems.Count > 0 && itemsInStorage.Count > 0)
+                food += ", ";
+
+            // Add anything else that is on the table
+            for (int i = 0; i < itemsInStorage.Count; i++)
             {
-                Debug.Log("Clear atleast one slot on the chopping board");
+                food += itemsInStorage[i];
+                // If this is not the last item add coma
+                if (i < itemsInStorage.Count - 1)
+                    food += ", ";
             }
+
+            processedItems.Clear();
+            itemsInStorage.Clear();
+
+            itemsInStorage.Add(food);
+
+            UpdateUI();
+            
         }
         #endregion
 
         #region ChopFunction
         IEnumerator ChopTimer(string resultItem, Action callback)
         {
+            // Items take time to chop up
             while(chopTimer <= chopTime)
             {
                 chopTimer++;
                 yield return new WaitForSeconds(1f);
             }
             chopTimer = 0;
+
+            //After items are chopped remove from storage and move it to processed
             itemsInStorage.RemoveAt(0);
             processedItems.Add(resultItem);
             callback();
@@ -151,17 +156,21 @@ namespace Controllers
         #endregion
 
         #region UIUpdate
+        //This function updates the player HUD
         void UpdateUI()
         {
             string text = "";
-
+            // Items from storage are shown first
             for (int i = 0; i < itemsInStorage.Count; i++) {
                 text += itemsInStorage[i];
                 text += "\n";
             }
 
-            text += "\n";
+            //Add space if there are items in both places
+            if(itemsInStorage.Count > 0 && processedItems.Count > 0)
+                text += "\n";
 
+            // Items from chopped food storage are shown next
             for (int i = 0; i < processedItems.Count; i++)
             {
                 text += processedItems[i];

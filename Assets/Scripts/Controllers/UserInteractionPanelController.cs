@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 namespace Controllers
 {
+
     public class UserInteractionPanelController : MonoBehaviour
     {
         #region Variables

@@ -120,7 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxStorageCount: 1
   maxChoppedItemsOnBoardCount: 3
-  interactionControlsMessage: Q to store, E to retrieve, C to chop, T to combine
+  interactionControlsMessage: ChoppingBoard
   possibleInteractions: 03000000010000000200000004000000
   chopTime: 3
   uiTextUpdateController: {fileID: 6512567391416013332}

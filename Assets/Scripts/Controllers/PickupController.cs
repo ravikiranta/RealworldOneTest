@@ -16,14 +16,15 @@ namespace Controllers
 
         [Header ("Info")]
         [SerializeField] private PickupData pickupData;
-        [SerializeField] private PlayerID pickupForPlayer;
+        [SerializeField] private PlayerID pickUpForPlayer;
         #endregion
 
         #region Init
-        public void Init(PickupData pickupDataInit)
+        public void Init(PickupData pickupDataInit, PlayerID pickUpForPlayer)
         {
             pickupData = pickupDataInit;
             pickupData.pickupModel = gameObject;
+            this.pickUpForPlayer = pickUpForPlayer;
         }
         #endregion
 
@@ -40,12 +41,13 @@ namespace Controllers
 
         void IPickup.PickupItem(Action<PickupData> pickedUpCallback, PlayerID playerID)
         {
-            if(playerID == pickupForPlayer)
+            if (playerID == pickUpForPlayer)
+            {
                 pickedUpCallback(pickupData);
+                Destroy(gameObject);
+            }
             else
                 pickedUpCallback(null);
-
-            Destroy(gameObject);
         }
         #endregion
     }

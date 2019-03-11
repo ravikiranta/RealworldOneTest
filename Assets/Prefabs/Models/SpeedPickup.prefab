@@ -105,10 +105,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   possibleInteractions: 07000000
+  interactionControlsMessage: SpeedPickup
   pickupData:
     pickupType: 0
     pickupModel: {fileID: 0}
     pickupValue: 0
     lifeTime: 0
-  interactionControlsMessage: E to pickup
   pickupForPlayer: 0

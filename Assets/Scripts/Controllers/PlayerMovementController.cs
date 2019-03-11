@@ -15,8 +15,8 @@ namespace Controllers {
         [SerializeField] private bool disablePlayerMovement;
 
         [Header("Info")]
-        [SerializeField] private float moveSpeedIncrement;
-        [SerializeField] private float moveIncrementTimer;
+        [SerializeField] private float moveSpeedIncrement;      // The increment in movement speed that comes from pickups
+        [SerializeField] private float moveIncrementTimer;      // The increment pickup lifetime timer
 
         private Rigidbody rb;       //Store a reference to the Rigidbody2D component required to use 2D Physics.
         private PlayerData playerData;
@@ -51,7 +51,7 @@ namespace Controllers {
             StartCoroutine("SpeedIncrementTimer");
         }
 
-        IEnumerator SpeedIncrementTimer(float timeInterval)
+        IEnumerator SpeedIncrementTimer()
         {
             while(moveIncrementTimer > 0)
             {
@@ -97,9 +97,6 @@ namespace Controllers {
             //speed, input sensitivity and direction to move our player forward.
             rb.AddForceAtPosition(transform.forward * (moveSpeed + moveSpeedIncrement) * moveVertical, transform.position);
         }
-        #endregion
-
-        #region PlayerScore
         #endregion
     }
 }

@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnItem: Onion
-  interactionControlsMessage: E to retrieve
+  interactionControlsMessage: RetrieveVegetable
   possibleInteractions: 02000000
 --- !u!1001 &3418406920389691626
 PrefabInstance:
